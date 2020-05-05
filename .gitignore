@@ -1,0 +1,16 @@
+.idea
+/.idea
+.composer
+*SendConfim.txt
+*.DS_Store
+.htaccess
+/bootstrap/cache/*
+/.env
+/public/.htaccess
+/_*
+/vendor
+/resources/views/vendor/*
+/storage/api-docs/*
+/*.sql
+/_*.php
+/.php*.php
