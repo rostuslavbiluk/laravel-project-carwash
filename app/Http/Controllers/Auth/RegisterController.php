@@ -74,49 +74,6 @@ class RegisterController extends Controller
      */
     protected function customCreate(array $data)
     {
-        if (!empty($data['phone'])) {
-            $data['phone'] = preg_replace('~\D~', '', $data['phone']);
-        }
-        if (empty($data['email'])) {
-            $data['email'] = \App\Classes\ClassHelper::genEmail($data['phone']);
-        }
-        if (!empty($data['phone']) && !empty($data['name'])) {
-            $sConfimCode = \App\Classes\ClassHelper::genPassword($data['phone']);
-        }
-        $arParams = [
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
 
-            'personal_phone' => $data['phone'],
-            'username' => $data['phone'], // login
-            'active' => 'Y',
-            'external_auth_id' => 'site',
-            'confirm_code' => $sConfimCode,
-
-            'last_name' => '',
-            'second_name' => '',
-            'checkword' => '',
-            'personal_photo' => 0,
-            'personal_gender' => '',
-            'personal_birthdate' => '',
-            'personal_mobile' => '',
-            'personal_city' => '',
-
-        ];
-        /* confim register user on phone number */
-        $arSendParams = [
-            'phone' => $data['phone'],
-            'confirm_code' => $sConfimCode,
-        ];
-        sendSmsConfim::sendConfim($arSendParams);
-        $user = User::create($arParams);
-        $user->roles()->sync([2]);
-        return $user;
-        /*return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);*/
     }
 }

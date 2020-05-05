@@ -39,7 +39,6 @@ class SmsManager
                 $logs['id_message'] = "Код ошибки: $sms->status_code. ";
                 $logs['balance'] = "Текст ошибки: $sms->status_text.";
             }
-            file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/.aSendConfimLogs.txt', json_encode($logs), FILE_APPEND);
             if ($sms->status == "OK") {
                 return true;
             }

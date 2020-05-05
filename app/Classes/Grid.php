@@ -4,7 +4,7 @@ namespace App\Classes;
 
 class Grid
 {
-    public static $nameColumns = [
+    public static $columns = [
         'id' => ['NAME' => 'Ид', 'SHOW' => 'Y', 'SORT' => '10'],
         'code' => ['NAME' => 'Символьный код', 'SHOW' => 'N', 'SORT' => '30'],
         'name' => ['NAME' => 'Наименование', 'SHOW' => 'Y', 'SORT' => '20'],
@@ -65,7 +65,7 @@ class Grid
 
     ];
 
-    protected static $prepareSettings = [
+    private static $paramsStructure = [
         'SHOW_ALL_SELECT' => 'Y',
         'SHOW_ACTION' => 'Y',
         'H1' => '',
@@ -90,66 +90,60 @@ class Grid
         ],
     ];
 
-    public static function prepareSettings($arSettings)
+    public static function prepareSettings(array $params): array
     {
-        $arResult = self::$prepareSettings;
+        $result = self::$paramsStructure;
 
-        if (isset($arSettings['SHOW_ALL_SELECT'])) {
-            $arResult['SHOW_ALL_SELECT'] = $arSettings['SHOW_ALL_SELECT'];
+        if (isset($params['SHOW_ALL_SELECT'])) {
+            $result['SHOW_ALL_SELECT'] = $params['SHOW_ALL_SELECT'];
         }
 
-        if (isset($arSettings['SHOW_ACTION'])) {
-            $arResult['SHOW_ACTION'] = $arSettings['SHOW_ACTION'];
+        if (isset($params['SHOW_ACTION'])) {
+            $result['SHOW_ACTION'] = $params['SHOW_ACTION'];
         }
 
-        if (isset($arSettings['H1'])) {
-            $arResult['H1'] = $arSettings['H1'];
+        if (isset($params['H1'])) {
+            $result['H1'] = $params['H1'];
         }
 
-        if (isset($arSettings['ITEM'])) {
-            if (is_array($arSettings['ITEM'])) {
-                $arResult['ITEMS']['ITEM'] = $arSettings['ITEM'];
+        if (isset($params['ITEM'])) {
+            if (is_array($params['ITEM'])) {
+                $result['ITEMS']['ITEM'] = $params['ITEM'];
             }
         }
 
-        if (isset($arSettings['ACTIONS'])) {
-            if (is_array($arSettings['ACTIONS']) && !empty($arSettings['ACTIONS'])) {
-
-                foreach ($arSettings['ACTIONS'] as $key => $item) {
+        if (isset($params['ACTIONS'])) {
+            if (is_array($params['ACTIONS']) && !empty($params['ACTIONS'])) {
+                foreach ($params['ACTIONS'] as $key => $item) {
                     $bItems = $item;
-                    $indexArray = key($bItems);
-
-                    if (isset($arResult['ITEMS']['ACTIONS'][$key][$indexArray])) {
-                        $arResult['ITEMS']['ACTIONS'][$key][$indexArray] = $item[$indexArray];
+                    $index = key($bItems);
+                    if (isset($result['ITEMS']['ACTIONS'][$key][$index])) {
+                        $result['ITEMS']['ACTIONS'][$key][$index] = $item[$index];
                     }
                 }
-                //$arResult['ITEMS']['ACTIONS'] = $arSettings['ACTIONS'];
             }
         }
 
-        if (isset($arSettings['MAIN_ACTIONS'])) {
-            if (is_array($arSettings['MAIN_ACTIONS']) && !empty($arSettings['MAIN_ACTIONS'])) {
-
-                foreach ($arSettings['MAIN_ACTIONS'] as $key => $item) {
+        if (isset($params['MAIN_ACTIONS'])) {
+            if (is_array($params['MAIN_ACTIONS']) && !empty($params['MAIN_ACTIONS'])) {
+                foreach ($params['MAIN_ACTIONS'] as $key => $item) {
                     $bItems = $item;
-                    $indexArray = key($bItems);
-
-                    if (isset($arResult['MAIN_ACTIONS'][$indexArray])) {
-                        $arResult['MAIN_ACTIONS'][$indexArray] = $item[$indexArray];
+                    $index = key($bItems);
+                    if (isset($result['MAIN_ACTIONS'][$index])) {
+                        $result['MAIN_ACTIONS'][$index] = $item[$index];
                     }
                 }
-                //$arResult['MAIN_ACTIONS'] = $arSettings['MAIN_ACTIONS'];
             }
         }
 
-        if (!empty($arResult['ITEMS']['ITEM'])) {
-            $arForGetColumns = $arResult['ITEMS']['ITEM'];
+        if (!empty($result['ITEMS']['ITEM'])) {
+            $arForGetColumns = $result['ITEMS']['ITEM'];
             foreach (array_shift($arForGetColumns) as $item) {
-                $arResult['COLUMNS'][] = $item['NAME'];
+                $result['COLUMNS'][] = $item['NAME'];
             }
         }
 
-        return $arResult;
+        return $result;
     }
 
     /**
@@ -159,19 +153,17 @@ class Grid
      */
     public static function getStructureData(array $data, array $columns): array
     {
-        if (!empty($data)) {
-            foreach ($data as $items) {
-                $nIndexArray = (isset($arrItems['id'])) ? $items['id'] : $items['ID'];
-                foreach ($items as $code => $value) {
-                    if (isset($columns[$code])) {
-                        if ($columns[$code]['SHOW'] == 'Y') {
-                            $result[$nIndexArray][] = [
-                                'SCODE' => $code,
-                                'NAME' => $columns[$code]['NAME'],
-                                'VALUE' => $value,
-                                'SORT' => $columns[$code]['SORT'],
-                            ];
-                        }
+        foreach ($data as $items) {
+            $index = (isset($arrItems['id'])) ? $items['id'] : $items['ID'];
+            foreach ($items as $code => $value) {
+                if (isset($columns[$code])) {
+                    if ($columns[$code]['SHOW'] == 'Y') {
+                        $result[$index][] = [
+                            'SCODE' => $code,
+                            'NAME' => $columns[$code]['NAME'],
+                            'VALUE' => $value,
+                            'SORT' => $columns[$code]['SORT'],
+                        ];
                     }
                 }
             }

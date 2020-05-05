@@ -23,7 +23,7 @@ class UserInfo
      * UserInfo constructor.
      * @param int $userId
      */
-    public function __construct(int $userId = 23)
+    public function __construct(int $userId = 1)
     {
         if ($userId > 0) {
             //$this->user = Auth::loginUsingId($userId, true);

@@ -225,16 +225,7 @@
 
                                                 @if (isset($arResult['ENTITY']['status']))
                                                     <div class="el-buttons-list full-width">
-                                                        @php
-                                                            foreach (\App\Classes\ClassHelper::$arStatus as $items) {
-                                                                $sClassName = 'btn-white';
-                                                                if ($items['ID'] === $arResult['ENTITY']['status']) {
-                                                                    $sClassName = 'btn-info';
-                                                                }
-                                                                echo '<a data-entity-id="' . $arResult['ENTITY']['id'] . '" data-id="' . $items['ID'] . '" class="btn btn-setStatus btn-sm ' . $sClassName . '" href="javascript:void(0);">
-                                                                        <i class="os-icon"></i><span>'.$items['NAME'].'</span></a>';
-                                                            }
-                                                        @endphp
+
                                                     </div>
                                                 @endif
 

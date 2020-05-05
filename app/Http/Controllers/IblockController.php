@@ -63,7 +63,7 @@ class IblockController extends Controller
 
         if (is_object($arAllResult)) {
 
-            $arItems = Grid::getStructureData($arAllResult->toArray(), Grid::$nameColumns);
+            $arItems = Grid::getStructureData($arAllResult->toArray(), Grid::$columns);
         }
 
         $arResult = Grid::prepareSettings([
